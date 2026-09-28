@@ -1,0 +1,16 @@
+{
+  "name": "BIOGLOW 2026-27 (official mat)",
+  "width_cm": 200,
+  "height_cm": 120,
+  "grid_cm": 20,
+  "grid_labels": true,
+  "image_grid": false,
+  "base_color": "white",
+  "background_image": "/static/bioglow_mat.png",
+  "margins": {"left": 30, "right": 30, "top": 0, "bottom": 0},
+  "table_color": [34, 38, 48],
+  "start": {"x": 28, "y": 20, "heading": 0},
+  "zones": [],
+  "regions": [],
+  "obstacles": []
+}

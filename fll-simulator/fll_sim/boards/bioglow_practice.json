@@ -1,0 +1,25 @@
+{
+  "name": "BIOGLOW practice (lines & sensors)",
+  "width_cm": 200,
+  "height_cm": 120,
+  "grid_cm": 20,
+  "grid_labels": true,
+  "base_color": "white",
+  "background_image": null,
+  "margins": {"left": 30, "right": 30, "top": 0, "bottom": 0},
+  "table_color": [34, 38, 48],
+  "start": {"x": 28, "y": 20, "heading": 0},
+  "zones": [
+    {"shape": "circle", "x": 0, "y": 0, "r": 55, "color": "red", "label": "Home"}
+  ],
+  "regions": [
+    {"shape": "rect", "x": 40,  "y": 60, "w": 120, "h": 4,  "color": "black"},
+    {"shape": "rect", "x": 156, "y": 60, "w": 4,   "h": 30, "color": "black"},
+    {"shape": "circle", "x": 120, "y": 95, "r": 12, "color": "cyan"},
+    {"shape": "circle", "x": 170, "y": 30, "r": 12, "color": "green"},
+    {"shape": "circle", "x": 90,  "y": 30, "r": 10, "color": "yellow"}
+  ],
+  "obstacles": [
+    {"shape": "rect", "x": 110, "y": 62, "w": 8, "h": 26, "color": "brown"}
+  ]
+}

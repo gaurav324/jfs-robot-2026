@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BIOGLOW Robot Lab Simulator</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <span class="logo">🤖</span>
+      <div>
+        <h1>BIOGLOW Robot Lab</h1>
+        <p class="sub">FLL SPIKE Prime Simulator</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <label class="picker">Example:
+        <select id="exampleSelect"><option value="">— load an example —</option></select>
+      </label>
+      <button id="runBtn" class="primary">▶ Run</button>
+      <button id="resetBtn">↺ Reset</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT: code editor -->
+    <section class="panel code-panel">
+      <div class="panel-head">
+        <span>Python code</span>
+        <span class="hint">paste your robot program here</span>
+      </div>
+      <div class="editor-wrap">
+        <textarea id="code" spellcheck="false" autocomplete="off"></textarea>
+      </div>
+    </section>
+
+    <!-- CENTER: the mat -->
+    <section class="panel board-panel">
+      <div class="panel-head">
+        <span>The mat</span>
+        <span id="statusChip" class="chip">ready</span>
+      </div>
+      <div class="canvas-wrap">
+        <canvas id="board" width="900" height="440"></canvas>
+      </div>
+      <div class="transport">
+        <button id="playBtn">▶</button>
+        <input id="scrub" type="range" min="0" max="0" value="0" step="1">
+        <span id="timeLabel" class="mono">0.00s</span>
+        <label class="speed">Speed
+          <select id="speedSel">
+            <option value="0.5">0.5×</option>
+            <option value="1" selected>1×</option>
+            <option value="2">2×</option>
+            <option value="4">4×</option>
+            <option value="8">8×</option>
+          </select>
+        </label>
+        <label class="toggle"><input type="checkbox" id="showTrace" checked> Trace</label>
+        <label class="toggle"><input type="checkbox" id="showGrid" checked> Grid</label>
+      </div>
+    </section>
+
+    <!-- RIGHT: config + readouts -->
+    <section class="panel side-panel">
+      <div class="tabs">
+        <button class="tab active" data-tab="robot">Robot</button>
+        <button class="tab" data-tab="board">Board</button>
+        <button class="tab" data-tab="readouts">Sensors</button>
+      </div>
+
+      <div class="tab-body" data-body="robot">
+        <div class="field"><label>Wheel diameter (cm)</label><input type="number" id="wheel_diameter_cm" step="0.1" value="5.6"></div>
+        <div class="field"><label>Axle track (cm)</label><input type="number" id="axle_track_cm" step="0.1" value="11.2"></div>
+        <div class="field"><label>Full speed (cm/s at 100%)</label><input type="number" id="full_speed_cmps" step="1" value="40"></div>
+        <div class="row2">
+          <div class="field"><label>Body length (cm)</label><input type="number" id="body_length_cm" step="0.5" value="18"></div>
+          <div class="field"><label>Body width (cm)</label><input type="number" id="body_width_cm" step="0.5" value="14"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Left port</label><input type="text" id="left_port" value="A"></div>
+          <div class="field"><label>Right port</label><input type="text" id="right_port" value="B"></div>
+        </div>
+        <h4>Start position</h4>
+        <div class="row3">
+          <div class="field"><label>X (cm)</label><input type="number" id="start_x" step="1" value="28"></div>
+          <div class="field"><label>Y (cm)</label><input type="number" id="start_y" step="1" value="20"></div>
+          <div class="field"><label>Heading°</label><input type="number" id="start_heading" step="5" value="0"></div>
+        </div>
+        <p class="hint small">Tip: click the mat to set the start position.</p>
+        <h4>Sensor mounting <span class="hint small">(offset from center)</span></h4>
+        <table class="sensors-table">
+          <thead><tr><th>Port</th><th>Forward</th><th>Side (right +)</th></tr></thead>
+          <tbody id="sensorRows"></tbody>
+        </table>
+        <button id="addSensorRow" class="mini">+ add sensor mount</button>
+      </div>
+
+      <div class="tab-body hidden" data-body="board">
+        <div class="field"><label>Board</label>
+          <select id="boardSelect"></select>
+        </div>
+        <div class="row2">
+          <div class="field"><label>Width (cm)</label><input type="number" id="board_w" step="1" value="200"></div>
+          <div class="field"><label>Height (cm)</label><input type="number" id="board_h" step="1" value="120"></div>
+        </div>
+        <div class="field"><label>Background image (optional)</label>
+          <input type="file" id="bgFile" accept="image/*"></div>
+        <p class="hint small">Load a photo/scan of your real BIOGLOW mat to trace over it.
+          Colored regions below are what the color sensor "sees".</p>
+        <div class="field"><label>Board JSON (advanced — regions &amp; obstacles)</label>
+          <textarea id="boardJson" class="json" spellcheck="false"></textarea></div>
+        <button id="applyBoard" class="mini">Apply board JSON</button>
+      </div>
+
+      <div class="tab-body hidden" data-body="readouts">
+        <div class="readout"><span>Position</span><span id="rdPos" class="mono">—</span></div>
+        <div class="readout"><span>Heading / Yaw</span><span id="rdHead" class="mono">—</span></div>
+        <div class="readout"><span>Color sensor</span><span id="rdColor" class="mono">—</span></div>
+        <div class="readout"><span>Reflected light</span><span id="rdRefl" class="mono">—</span></div>
+        <div class="readout"><span>Distance sensor</span><span id="rdDist" class="mono">—</span></div>
+        <div class="readout"><span>Attachment motors</span><span id="rdMotors" class="mono">—</span></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- BOTTOM: always-visible output / logs -->
+  <section id="output" class="output">
+    <div class="output-head">
+      <span class="out-title">Output &amp; Logs</span>
+      <span id="outStatus" class="out-status"></span>
+      <span class="spacer"></span>
+      <label class="toggle"><input type="checkbox" id="showEvents" checked> show robot actions</label>
+      <button id="clearOut" class="mini">Clear</button>
+      <button id="toggleOut" class="mini">Hide ▾</button>
+    </div>
+    <div id="console" class="console"></div>
+  </section>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
